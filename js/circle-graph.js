@@ -22,6 +22,14 @@ Node.prototype.draw = function ( context ){
 nodes = new Array();
 nodes.push(new Node(20, 20, 300, 'rgba(255,0,0,0.67)', 'reddot'))
 
+
+void draw_circle_graph( graph ){
+    for (i=0; i<graph.length; ++i)
+    {
+        
+    }
+}
+
 function draw(){
     //canvas = $('#id-circle-graph');
     canvas = document.getElementById('id-circle-graph');
