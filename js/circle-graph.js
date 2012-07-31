@@ -19,32 +19,36 @@ Node.prototype.draw = function ( context ){
     context.fillText(this.label, this.x, this.y);
 }
 
-nodes = new Array();
-nodes.push(new Node(20, 20, 300, 'rgba(255,0,0,0.67)', 'reddot'))
+function randint(min, max)
+{
+    return parseInt(min + Math.random()*(max-min));
+}
 
-
-void draw_circle_graph( graph ){
+function make_nodes( graph, size){
+    var nodes = new Array();
+    var radius = size/2.2;
     for (i=0; i<graph.length; ++i)
     {
-        
+        var color = 'rgba(' + randint(128,255) + ',' + randint(128,255) + ',' + randint(128,255) + ',0.8)';
+        var angle = Math.PI*2.0/graph.length*i;
+        var x = size/2.0 + Math.sin(angle)*radius;
+        var y = size/2.0 + Math.cos(angle)*radius;
+        nodes[graph[i].key] = new Node(x, y, graph[i].dependancies.length, color, graph[i].key);
     }
+    return nodes;
 }
 
 function draw(){
     //canvas = $('#id-circle-graph');
-    canvas = document.getElementById('id-circle-graph');
+    var canvas = document.getElementById('id-circle-graph');
     context = canvas.getContext('2d');
     context.fillStyle = "rgb(102,102,102)";
-    context.fillRect(0, 0, 400, 400);
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
-    n1 = new Node(200, 200, 40, "rgba(255,255,255,0.7)", "Node 1");
-    n1.draw( context );
+    var nodes = make_nodes(graph, Math.min(canvas.width, canvas.height));
 
-    n2 = new Node(250, 200, 60, "rgba(200,200,200,0.7)", "Node 2");
-    n2.draw( context );
-
-    for (i=0; i<nodes.length; ++i){
-        nodes[i].draw( context );
+    for (key in nodes){
+        nodes[key].draw( context );
     }
     
     /*context.fillStyle = "rgb(255,255,255)";
