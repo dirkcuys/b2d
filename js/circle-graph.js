@@ -12,7 +12,7 @@ Node.prototype.draw = function ( context ){
     context.arc(this.x, this.y, this.size, 0, Math.PI*2.0, false);
     context.fill();
 
-    context.fillStyle = "rgb(0,0,0)";
+    //context.fillStyle = "rgba(0,0,0,0.7)";
     context.font = "bold 12px sans-serif";
     context.textAlign = "center";
     context.textBaseline = "middle";
@@ -27,7 +27,7 @@ function randint(min, max)
 function make_nodes( graph, size){
     var nodes = new Array();
     var radius = size/2.2;
-    for (i=0; i<graph.length; ++i)
+    for (var i=0; i<graph.length; ++i)
     {
         var color = 'rgba(' + randint(128,255) + ',' + randint(128,255) + ',' + randint(128,255) + ',0.8)';
         var angle = Math.PI*2.0/graph.length*i;
@@ -36,6 +36,25 @@ function make_nodes( graph, size){
         nodes[graph[i].key] = new Node(x, y, graph[i].dependancies.length, color, graph[i].key);
     }
     return nodes;
+}
+
+function draw_arcs( context, graph, node_list )
+{
+    for (var i=0; i<graph.length; ++i)
+    {
+        context.beginPath();
+        node = node_list[graph[i].key];
+
+        for (var j=0; j<graph[i].dependancies.length; ++j)
+        {
+            context.moveTo(node.x, node.y);
+            dep = node_list[graph[i].dependancies[j]];
+            context.lineTo(dep.x, dep.y);
+        }
+
+        context.strokeStyle = node.color;
+        context.stroke();
+    }
 }
 
 function draw(){
@@ -47,10 +66,12 @@ function draw(){
 
     var nodes = make_nodes(graph, Math.min(canvas.width, canvas.height));
 
+    draw_arcs(context, graph, nodes);
+
     for (key in nodes){
         nodes[key].draw( context );
     }
-    
+
     /*context.fillStyle = "rgb(255,255,255)";
     context.beginPath();
     context.arc(200, 200, 40, 0, Math.PI*2.0, false);
