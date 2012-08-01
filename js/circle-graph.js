@@ -24,7 +24,8 @@ function randint(min, max)
     return parseInt(min + Math.random()*(max-min));
 }
 
-function make_nodes( graph, size){
+function make_nodes( graph, size )
+{
     var nodes = new Array();
     var radius = size/2.2;
     for (var i=0; i<graph.length; ++i)
@@ -71,9 +72,4 @@ function draw(){
     for (key in nodes){
         nodes[key].draw( context );
     }
-
-    /*context.fillStyle = "rgb(255,255,255)";
-    context.beginPath();
-    context.arc(200, 200, 40, 0, Math.PI*2.0, false);
-    context.fill();*/
 }
